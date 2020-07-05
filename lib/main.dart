@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'quiz.dart';
 import 'result.dart';
+
 // void main() {
 //   runApp(MyApp());
 // }
@@ -19,24 +20,47 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final _questions = const [
     {
-      'questionText': 'What\'s your favorite color?',
-      'answers': ['Black', 'Red', 'Green', 'White'],
+      'questionText': 'What\'s your favourite programming language?',
+      'answers': [
+        {'text': 'c', 'score': 10},
+        {'text': 'c++', 'score': 25},
+        {'text': 'Java', 'score': 15},
+        {'text': 'Python', 'score': 20}
+      ],
     },
     {
-      'questionText': 'What\'s your favorite animal?',
-      'answers': ['Rabbit', 'Snake', 'Elephant', 'Lion'],
+      'questionText': 'What do you develop using the language?',
+      'answers': [
+        {'text': 'WebApps', 'score': 30},
+        {'text': 'Android Apps', 'score': 10},
+        {'text': 'Software Solutions', 'score': 20},
+        {'text': 'Others', 'score': 25}
+      ],
     },
     {
-      'questionText': 'Who\'s your favorite instructor?',
-      'answers': ['Max', 'Max', 'Max', 'Max'],
+      'questionText': 'Where did you learn to code?',
+      'answers': [
+        {'text': 'College', 'score': 20},
+        {'text': 'Online', 'score': 15},
+        {'text': 'Mentor', 'score': 30},
+        {'text': 'Others', 'score': 25}
+      ],
     },
   ];
   var _questionIndex = 0;
+  var _totalScore = 0;
 
-  void _answerQuestion() {
+  void _resetQuiz(){
+    setState(() {
+      _questionIndex=0;
+      _totalScore=0;
+    });
+  }
+
+  void _answerQuestion(int score) {
     // var aBool = true;
     // aBool = false;
-
+    _totalScore+=score;
     setState(() {
       _questionIndex = _questionIndex + 1;
     });
@@ -62,8 +86,11 @@ class _MyAppState extends State<MyApp> {
           title: Text('My First App'),
         ),
         body: _questionIndex < _questions.length
-            ? Quiz(answerQuestion: _answerQuestion, questions:_questions, questionIndex: _questionIndex)
-            : Result(),
+            ? Quiz(
+                answerQuestion: _answerQuestion,
+                questions: _questions,
+                questionIndex: _questionIndex)
+            : Result(_totalScore, _resetQuiz),
       ),
     );
   }
